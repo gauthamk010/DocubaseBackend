@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { RegisterDTO, LoginDTO } from './DTO/auth.dto';
 import { User } from 'src/auth/schemas/user.schema';
 import { JwtPayload } from 'jsonwebtoken';
+import { Role } from './enums/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
             phoneNumber,
             password: hashedPassword,
             profileImage: profileimage,
-            roles: Array.isArray(roles) ? roles : [roles]
+            roles: Array.isArray(roles) && roles.length > 0 ? roles : [Role.User]
         });
 
         const payload: JwtPayload = { id: user._id, name: user.name, roles: user.roles };

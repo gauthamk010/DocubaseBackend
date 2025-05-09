@@ -63,7 +63,6 @@ export class BookService {
         }
         return await this.bookModel.find(filter);
     }
-  
     
     async updateBook(
       id: string,

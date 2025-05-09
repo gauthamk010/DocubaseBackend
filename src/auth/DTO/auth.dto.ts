@@ -1,4 +1,6 @@
-import { IsArray, IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsArray, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { Role } from "../enums/role.enum";
+import { Transform } from "class-transformer";
 
 export class RegisterDTO
 {
@@ -23,9 +25,11 @@ export class RegisterDTO
     @IsString()
     readonly profileImage: string;
 
+    @IsOptional()
     @IsArray()
-    @IsString({ each: true })
-    roles: string[];
+    @IsEnum(Role, { each: true })
+    @Transform(({ value }) => (value?.length ? value : [Role.User]))
+    roles?: Role[];    
 }
 
 export class LoginDTO

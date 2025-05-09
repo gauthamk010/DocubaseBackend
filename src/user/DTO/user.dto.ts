@@ -1,4 +1,6 @@
-import { IsArray, IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsArray, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { Role } from "src/auth/enums/role.enum";
 
 export class CreateUserDTO
 {
@@ -9,7 +11,7 @@ export class CreateUserDTO
     @IsNotEmpty()
     @IsString()
     @MinLength(10)
-    readonly phone_number: string;
+    readonly phoneNumber: string;
 
     @IsNotEmpty()
     @IsEmail({}, { message: 'Please enter correct email' })
@@ -20,8 +22,13 @@ export class CreateUserDTO
     @MinLength(8)
     readonly password: string;
 
+    @IsString()
+    readonly profileImage: string;
+
     @IsArray()
+    @IsEnum(Role, { each: true })
     @IsString({ each: true })
+    @Transform(({ value }) => value ?? [Role.User])
     roles: string[];
 }
 

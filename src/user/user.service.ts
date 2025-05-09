@@ -25,11 +25,15 @@ export class UserService {
     async createUser(createUserDto: CreateUserDTO)
     {
         try{
+            const { roles, name, email, phoneNumber, profileImage } = createUserDto;
             const { rawPassword, hashedPassword } = await generatePassword();
-          
+            const profileimage = `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(name)}`; 
+
           const newUser = new this.userModel({
-              ...createUserDto,                 
-              password: hashedPassword,  
+              ...createUserDto,  
+              phoneNumber,               
+              password: hashedPassword,
+              profileImage: profileimage,  
           });
   
           await newUser.save();
